@@ -1,4 +1,3 @@
 Guardfile
-Gemfile
 Gemfile.lock
-doc/
+pkg

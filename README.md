@@ -178,6 +178,14 @@ end
 # => ArgumentError: Error encountered in K-factor block when passed nil rating: undefined method `/' for nil:NilClass
 ```
 
+## Thanks
+
+Thanks to:
+
+* Divergent Informatics for their [multiplayer Elo
+calculator](http://elo.divergentinformatics.com/) used to verify calculations used in the development of this gem
+* [Ian Hecker](https://github.com/iain) for the original [Elo](https://github.com/iain/elo) gem.
+
 ## License
 
 Copyright © 2014 Maxwell Holder.

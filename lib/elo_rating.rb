@@ -29,7 +29,7 @@ module EloRating
   #     end
   #   end
   #
-  # Raises an ArgumentError if an exception is encountered when calling the provided block with nil as the argument
+  # Raises an +ArgumentError+ if an exception is encountered when calling the provided block with nil as the argument
   def self.set_k_factor(&k_factor)
     k_factor.call(nil)
     @k_factor = k_factor

@@ -2,15 +2,16 @@
 # This class represents a single game between a number of players.
 class EloRating::Match
 
+  # All the players of the match.
   attr_reader :players
 
-  # Creates a new match
+  # Creates a new match with no players.
   def initialize
     @players = []
   end
 
   # Adds a player to the match
-  # 
+  #
   # ==== Attributes
   # * +rating+: the Elo rating of the player
   # * +winner+ (optional): boolean, whether this player is the winner of the match

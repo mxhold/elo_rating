@@ -1,6 +1,6 @@
 # elo_rating
 
-`elo_rating` helps you calculate [Elo ratings](https://en.wikipedia.org/wiki/Elo_rating_system), a rating system used primary for Chess.
+`elo_rating` helps you calculate [Elo ratings](https://en.wikipedia.org/wiki/Elo_rating_system), a rating system used primary for Chess, but can be used anywhere you want to determine an absolute ordering of things by doing many comparisons of a small number of things.
 
 It can handle multiple players in one game and allows for custom K-factor functions.
 
@@ -20,9 +20,11 @@ gem 'elo_rating'
 
 ## Usage
 
-Say you have two players, both have ratings of 2000. The second player wins. To
-determine both player's updated ratings:
+Say you have two players playing against each other in a match, both with initial ratings of 2000.
 
+The second player wins.
+
+To determine both player's updated ratings:
 
 ```ruby
 match = EloRating::Match.new
@@ -31,13 +33,19 @@ match.add_player(rating: 2000, winner: true)
 match.updated_ratings # => [1988, 2012]
 ```
 
-The first player's rating goes down 12 points and the second player's goes up 12 points.
+This tells us that the first player's rating should go down 12 points and the second player's should go up 12 points.
+
+You can chain the same function calls to achieve the same result:
+
+```ruby
+EloRating::Match.new.add_player(rating: 2000).add_player(rating: 2000, winner: true).updated_ratings # => [1988, 2012]
+```
 
 ### >2 players
 
-Most Elo rating calculators only allow for matches of just 2 players, but the
-formula can be extended games with more players by calculating rating adjustments
-for each player against each of their opponents.
+Most Elo rating calculators only allow for matches of just 2 players, but the formula can be extended to games of any number of players.
+
+We can do this by combining the rating adjustments for each pairing of players into one big adjustment.
 
 Say you have three players, rated 1900, 2000, and 2000. They are playing a game
 like [Monopoly](https://en.wikipedia.org/wiki/Monopoly_(game)) where there is
@@ -52,20 +60,25 @@ match.add_player(rating: 2000)
 match.updated_ratings # => [1931, 1985, 1985]
 ```
 
+This is calculated as if the first player beat both of the other players and the other two players tied.
+
 ### Ranked games
 
-Some games like [Mario Kart](https://en.wikipedia.org/wiki/Mario_Kart) have
-multiple, ranked winners. Let's say you have three players like before, rated
-1900, 2000, and 2000. Instead of indicating the winner, you can specify the
-ranks:
+Some games like [Mario Kart](https://en.wikipedia.org/wiki/Mario_Kart) have multiple, ranked winners.
+
+Let's say you have three players like before, rated 1900, 2000, and 2000, who came in first place, second place, and third place respectively.
+
+Instead of indicating the winner, you can specify their places:
 
 ```ruby
 match = EloRating::Match.new
-match.add_player(rating: 1900, rank: 1)
-match.add_player(rating: 2000, rank: 2)
-match.add_player(rating: 2000, rank: 3)
+match.add_player(rating: 1900, place: 1)
+match.add_player(rating: 2000, place: 2)
+match.add_player(rating: 2000, place: 3)
 match.updated_ratings # => [1973, 1997, 1931]
 ```
+
+This is calculated as if the first player beat both of the other players and the second player beat the third.
 
 ## Elo rating functions
 
@@ -83,10 +96,11 @@ The player rated 1900 has a 36% chance of winning.
 
 ### Rating adjustment
 
-You can use the expected score and the results of an actual match to determine
-how an Elo rating should change.
+You can use the expected score and the results of an actual match to determine how an Elo rating should change.
 
-Let's say we have the expected rating from above of 0.36. If the first player rated 1900 won the match, their actual score would be 1.
+The `EloRating.rating_adjustment` function takes an expected score and an actual score and returns how much a rating should go up or down.
+
+Let's say we have the expected rating from above of 0.36 and the first player rated 1900 won the match, making their actual score 1.
 
 We can use this to determine how much their rating should change:
 
@@ -94,7 +108,7 @@ We can use this to determine how much their rating should change:
 EloRating.rating_adjustment(0.36, 1) # => 15.36
 ```
 
-Their rating should go up about 15 points if they win.
+This means their rating should now be 1915.
 
 ## K-factor
 
@@ -106,18 +120,27 @@ It defaults to 24:
 EloRating::k_factor # => 24
 ```
 
-You can change this to any number. With a lower K-factor, ratings are less volatile and change slower:
+You can change this to any number. With a lower K-factor, ratings are less volatile and change slower. Compare:
 
 ```ruby
 EloRating::k_factor = 10
 match = EloRating::Match.new
 match.add_player(rating: 2000, winner: true)
 match.add_player(rating: 2000)
-match.updated_ratings # => [1995, 2005]
+match.updated_ratings # => [2005, 1995]
 ```
 
-You can also pass a block to provide a custom function to calculate the K-factor
-based on the player's rating:
+to:
+
+```ruby
+EloRating::k_factor = 20
+match = EloRating::Match.new
+match.add_player(rating: 2000, winner: true)
+match.add_player(rating: 2000)
+match.updated_ratings # => [2010, 1990]
+```
+
+You can also pass a block to provide a custom function to calculate the K-factor based on the player's rating:
 
 ```ruby
 EloRating::set_k_factor do |rating|
@@ -132,8 +155,7 @@ EloRating::set_k_factor do |rating|
 end
 ```
 
-You can provide a rating to `EloRating.rating_adjustment` that will be used in
-your custom K-factor function:
+Then you can provide a rating to `EloRating.rating_adjustment` that will be used in your custom K-factor function:
 
 ```ruby
 EloRating.rating_adjustment(0.75, 0) # => -24.0
@@ -141,13 +163,13 @@ EloRating.rating_adjustment(0.75, 0, rating: 2200) # => -18.0
 EloRating.rating_adjustment(0.75, 0, rating: 2500) # => -12.0
 ```
 
-You can also specify a K-factor for a single rating adjustment:
+You can also just specify a K-factor directly for a single rating adjustment:
 
 ```ruby
 EloRating.rating_adjustment(0.75, 0, k_factor: 24) # => -18.0
 ```
 
-Note: custom K-factor functions must not raise any exceptions when the rating is nil:
+*Note*: custom K-factor functions must not raise any exceptions when the rating is nil:
 
 ```ruby
 EloRating::set_k_factor do |rating|

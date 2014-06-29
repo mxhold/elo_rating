@@ -4,7 +4,7 @@
 
 It can handle multiple players in one game and allows for custom K-factor functions.
 
-- [API Documentation]()
+- [API Documentation](https://mxhold.github.io/elo_rating/doc/)
 
 ## Getting started
 

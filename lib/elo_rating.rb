@@ -1,3 +1,5 @@
+require "elo_rating/version"
+require 'elo_rating/match'
 # :main: README.md
 
 ##
@@ -70,4 +72,3 @@ module EloRating
   end
 end
 
-require 'elo_rating/match'

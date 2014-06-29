@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'guard'
-gem 'rspec'
-gem 'guard-rspec'
+# Specify your gem's dependencies in elo_rating.gemspec
+gemspec

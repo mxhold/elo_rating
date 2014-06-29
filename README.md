@@ -15,7 +15,7 @@ gem install elo_rating
 or add it to your Gemfile and run `bundle`:
 
 ```ruby
-gem 'elo_rating'
+gem 'elo_rating', '~> 1.0'
 ```
 
 ## Usage

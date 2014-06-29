@@ -1,9 +1,8 @@
 # elo_rating
 
-EloRating is a tiny library for calculating [Elo
-ratings](https://en.wikipedia.org/wiki/Elo_rating_system), a rating system used
-primary for Chess. It can handle multiple players in one game and allows for custom
-K-factor functions.
+`elo_rating` helps you calculate [Elo ratings](https://en.wikipedia.org/wiki/Elo_rating_system), a rating system used primary for Chess.
+
+It can handle multiple players in one game and allows for custom K-factor functions.
 
 - [API Documentation]()
 
@@ -24,16 +23,17 @@ gem 'elo_rating'
 Say you have two players, both have ratings of 2000. The second player wins. To
 determine both player's updated ratings:
 
+
 ```ruby
 match = EloRating::Match.new
 match.add_player(rating: 2000)
 match.add_player(rating: 2000, winner: true)
-match.updated_ratings # => [1988, 2013]
+match.updated_ratings # => [1988, 2012]
 ```
 
 The first player's rating goes down 12 points and the second player's goes up 12 points.
 
-## > 2 players
+### >2 players
 
 Most Elo rating calculators only allow for matches of just 2 players, but the
 formula can be extended games with more players by calculating rating adjustments
@@ -52,7 +52,7 @@ match.add_player(rating: 2000)
 match.updated_ratings # => [1931, 1985, 1985]
 ```
 
-## Ranked games
+### Ranked games
 
 Some games like [Mario Kart](https://en.wikipedia.org/wiki/Mario_Kart) have
 multiple, ranked winners. Let's say you have three players like before, rated
@@ -67,16 +67,46 @@ match.add_player(rating: 2000, rank: 3)
 match.updated_ratings # => [1973, 1997, 1931]
 ```
 
-## K-factor
+## Elo rating functions
 
-The K-factor determines how much impact the most recent game has on a player's
-rating. It defaults to 24:
+The functions used in the above calculations are available for use directly:
+
+### Expected score
+
+Say you have 2 players, rated 1900 and 2000.
 
 ```ruby
-EloRating::k_factor #=> 24
+EloRating.expected_score(1900, 2000) # => 0.360
 ```
 
-With a lower K-factor, ratings are less volatile and change slower:
+The player rated 1900 has a 36% chance of winning.
+
+### Rating adjustment
+
+You can use the expected score and the results of an actual match to determine
+how an Elo rating should change.
+
+Let's say we have the expected rating from above of 0.36. If the first player rated 1900 won the match, their actual score would be 1.
+
+We can use this to determine how much their rating should change:
+
+```ruby
+EloRating.rating_adjustment(0.36, 1) # => 15.36
+```
+
+Their rating should go up about 15 points if they win.
+
+## K-factor
+
+The K-factor is used in calculating the rating adjustment and determines how much impact the most recent game has on a player's rating.
+
+It defaults to 24:
+
+```ruby
+EloRating::k_factor # => 24
+```
+
+You can change this to any number. With a lower K-factor, ratings are less volatile and change slower:
 
 ```ruby
 EloRating::k_factor = 10
@@ -90,10 +120,11 @@ You can also pass a block to provide a custom function to calculate the K-factor
 based on the player's rating:
 
 ```ruby
-EloRating::k_factor do |rating|
+EloRating::set_k_factor do |rating|
+  rating ||= 2000
   if rating < 2100
     32
-  elsif 2100 <= rating <= 2400
+  elsif 2100 <= rating && rating <= 2400
     24
   else
     16
@@ -101,12 +132,26 @@ EloRating::k_factor do |rating|
 end
 ```
 
-## Expected score
-
-Say you have 2 players, rated 1900 and 2000.
+You can provide a rating to `EloRating.rating_adjustment` that will be used in
+your custom K-factor function:
 
 ```ruby
-EloRating.expected_score(1900, 2000) # => 0.360
+EloRating.rating_adjustment(0.75, 0) # => -24.0
+EloRating.rating_adjustment(0.75, 0, rating: 2200) # => -18.0
+EloRating.rating_adjustment(0.75, 0, rating: 2500) # => -12.0
 ```
 
-The player rated 1900 has a 36% chance of winning.
+You can also specify a K-factor for a single rating adjustment:
+
+```ruby
+EloRating.rating_adjustment(0.75, 0, k_factor: 24) # => -18.0
+```
+
+Note: custom K-factor functions must not raise any exceptions when the rating is nil:
+
+```ruby
+EloRating::set_k_factor do |rating|
+  rating / 100
+end
+# => ArgumentError: Error encountered in K-factor block when passed nil rating: undefined method `/' for nil:NilClass
+```

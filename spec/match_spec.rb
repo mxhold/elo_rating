@@ -28,6 +28,20 @@ describe EloRating::Match do
         expect(match.updated_ratings).to eql [1931, 1997, 1973]
       end
     end
+    context 'custom K-factor function' do
+      it 'uses the custom K-factor function' do
+        EloRating::set_k_factor do |rating|
+          rating || 0
+        end
+
+        match = EloRating::Match.new
+        match.add_player(rating: 2000)
+        match.add_player(rating: 2000, winner: true)
+        expect(match.updated_ratings).not_to eql [2000, 2000]
+
+        EloRating::k_factor = 24
+      end
+    end
     context 'multiple winners specified' do
       it 'raises an error' do
         match = EloRating::Match.new

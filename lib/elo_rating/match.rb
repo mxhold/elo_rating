@@ -87,7 +87,8 @@ class EloRating::Match
     def rating_adjustment_against(opponent)
       EloRating.rating_adjustment(
         expected_score_against(opponent),
-        actual_score_against(opponent)
+        actual_score_against(opponent),
+        rating: rating
       )
     end
 

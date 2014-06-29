@@ -31,7 +31,7 @@
         </div>
         <div class='last-update'>
           Last Update:
-          <span class='datetime'>2014-06-29 15:38:40 -0400</span>
+          <span class='datetime'>2014-06-29 16:18:29 -0400</span>
         </div>
       </div>
       <div id='content'>
@@ -107,7 +107,7 @@
             
             <p>Instead of indicating the winner, you can specify their places:</p>
             
-            <pre class="ruby"><span class="ruby-identifier">match</span> = <span class="ruby-constant">EloRating</span><span class="ruby-operator">::</span><span class="ruby-constant">Match</span>.<span class="ruby-identifier">new</span>&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">add_player</span>(<span class="ruby-identifier">rating</span><span class="ruby-operator">:</span> <span class="ruby-value">1900</span>, <span class="ruby-identifier">place</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">add_player</span>(<span class="ruby-identifier">rating</span><span class="ruby-operator">:</span> <span class="ruby-value">2000</span>, <span class="ruby-identifier">place</span><span class="ruby-operator">:</span> <span class="ruby-value">2</span>)&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">add_player</span>(<span class="ruby-identifier">rating</span><span class="ruby-operator">:</span> <span class="ruby-value">2000</span>, <span class="ruby-identifier">place</span><span class="ruby-operator">:</span> <span class="ruby-value">3</span>)&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">updated_ratings</span> <span class="ruby-comment"># =&gt; [1973, 1997, 1931]</span></pre>
+            <pre class="ruby"><span class="ruby-identifier">match</span> = <span class="ruby-constant">EloRating</span><span class="ruby-operator">::</span><span class="ruby-constant">Match</span>.<span class="ruby-identifier">new</span>&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">add_player</span>(<span class="ruby-identifier">rating</span><span class="ruby-operator">:</span> <span class="ruby-value">1900</span>, <span class="ruby-identifier">place</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">add_player</span>(<span class="ruby-identifier">rating</span><span class="ruby-operator">:</span> <span class="ruby-value">2000</span>, <span class="ruby-identifier">place</span><span class="ruby-operator">:</span> <span class="ruby-value">2</span>)&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">add_player</span>(<span class="ruby-identifier">rating</span><span class="ruby-operator">:</span> <span class="ruby-value">2000</span>, <span class="ruby-identifier">place</span><span class="ruby-operator">:</span> <span class="ruby-value">3</span>)&#x000A;<span class="ruby-identifier">match</span>.<span class="ruby-identifier">updated_ratings</span> <span class="ruby-comment"># =&gt; [1931, 1997, 1973]</span></pre>
             
             <p>This is calculated as if the first player beat both of the other players
             and the second player beat the third.</p>

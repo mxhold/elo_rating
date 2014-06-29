@@ -177,3 +177,10 @@ EloRating::set_k_factor do |rating|
 end
 # => ArgumentError: Error encountered in K-factor block when passed nil rating: undefined method `/' for nil:NilClass
 ```
+
+## License
+
+Copyright © 2014 Maxwell Holder.
+
+It is free software, and may be redistributed under the terms specified in the
+LICENSE file.

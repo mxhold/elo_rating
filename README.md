@@ -75,7 +75,7 @@ match = EloRating::Match.new
 match.add_player(rating: 1900, place: 1)
 match.add_player(rating: 2000, place: 2)
 match.add_player(rating: 2000, place: 3)
-match.updated_ratings # => [1973, 1997, 1931]
+match.updated_ratings # => [1931, 1997, 1973]
 ```
 
 This is calculated as if the first player beat both of the other players and the second player beat the third.

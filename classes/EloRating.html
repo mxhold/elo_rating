@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>EloRating</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+    <link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>module</span>
+          EloRating
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a target="docwin" href="../files/lib/elo_rating_rb.html">lib/elo_rating.rb</a>
+          </li>
+          <li class='other'>
+            <a target="docwin" href="../files/lib/elo_rating/match_rb.html">lib/elo_rating/match.rb</a>
+          </li>
+          <li class='other'>
+            <a target="docwin" href="../files/lib/elo_rating/version_rb.html">lib/elo_rating/version.rb</a>
+          </li>
+          <li>
+            <a class='show' href='#' onclick='this.parentNode.parentNode.className += " expanded"; this.parentNode.removeChild(this); return false'>show all</a>
+          </li>
+        </ol>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            
+            <p><a href="EloRating.html">EloRating</a> helps you calculate Elo ratings.</p>
+            
+            <p>See the <a href="../files/README_md.html">README</a> for an introduction.</p>
+          </div>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>Public Class</h3>
+            <ol>
+              <li><a target="docwin" href="#method-c-expected_score">expected_score</a></li>
+              <li><a target="docwin" href="#method-c-k_factor">k_factor</a></li>
+              <li><a target="docwin" href="#method-c-k_factor-3D">k_factor=</a></li>
+              <li><a target="docwin" href="#method-c-rating_adjustment">rating_adjustment</a></li>
+              <li><a target="docwin" href="#method-c-set_k_factor">set_k_factor</a></li>
+            </ol>
+          </div>
+          <div id='context'>
+          </div>
+          <div id='class-list'>
+            <h2>Classes and Modules</h2>
+            <ol>
+              <li><a target="docwin" href="EloRating/Match.html">EloRating::Match</a></li>
+            </ol>
+          </div>
+          <div id='section'>
+            <div id='constants-list'>
+              <h2>Constants</h2>
+              <div class='name-list'>
+                <table summary='Constants'>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>VERSION</td>
+                    <td>=</td>
+                    <td class='context-item-value'>"1.0.0"</td>
+                    <td>&nbsp;</td>
+                    <td class='context-item-desc'>
+                      
+                      <p>Gem version</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id='methods'>
+              <h2>Public Class methods</h2>
+              <div class='method public-class' id='method-method-c-expected_score'>
+                <a name='method-c-expected_score'></a>
+                <div class='synopsis'>
+                  <span class='name'>expected_score</span>
+                  <span class='arguments'>(player_rating, opponent_rating)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Calculates the expected score of a player given their rating
+                  (<code>player_rating</code>) and their opponent&#39;s rating
+                  (<code>opponent_rating</code>).</p>
+                  
+                  <p>Returns a float between 0 and 1 where 0.999 represents high certainty of
+                  the first player winning.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-c-expected_score-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-c-expected_score-source'><span class="ruby-comment"># File lib/elo_rating.rb, line 52</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">expected_score</span>(<span class="ruby-identifier">player_rating</span>, <span class="ruby-identifier">opponent_rating</span>)&#x000A;  <span class="ruby-value">1.0</span><span class="ruby-operator">/</span>(<span class="ruby-value">1</span> <span class="ruby-operator">+</span> (<span class="ruby-value">10</span> <span class="ruby-operator">**</span> ((<span class="ruby-identifier">opponent_rating</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">player_rating</span>)<span class="ruby-operator">/</span><span class="ruby-value">400.0</span>)))&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-class' id='method-method-c-k_factor'>
+                <a name='method-c-k_factor'></a>
+                <div class='synopsis'>
+                  <span class='name'>k_factor</span>
+                  <span class='arguments'>(rating = nil)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Calls the K-factor function with the provided rating.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-c-k_factor-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-c-k_factor-source'><span class="ruby-comment"># File lib/elo_rating.rb, line 17</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">k_factor</span>(<span class="ruby-identifier">rating</span> = <span class="ruby-keyword">nil</span>)&#x000A;  <span class="ruby-ivar">@k_factor</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">rating</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-class' id='method-method-c-k_factor-3D'>
+                <a name='method-c-k_factor-3D'></a>
+                <div class='synopsis'>
+                  <span class='name'>k_factor=</span>
+                  <span class='arguments'>(k_factor)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Sets the K-factor to a number.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-c-k_factor-3D-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-c-k_factor-3D-source'><span class="ruby-comment"># File lib/elo_rating.rb, line 41</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">k_factor=</span>(<span class="ruby-identifier">k_factor</span>)&#x000A;  <span class="ruby-ivar">@k_factor</span> = <span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">k_factor</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-class' id='method-method-c-rating_adjustment'>
+                <a name='method-c-rating_adjustment'></a>
+                <div class='synopsis'>
+                  <span class='name'>rating_adjustment</span>
+                  <span class='arguments'>(expected_score, actual_score, rating: nil, k_factor: nil)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Calculates the amount a player&#39;s rating should change.</p>
+                  
+                  <h4 id="method-c-rating_adjustment-label-Arguments">Arguments<span><a href="#method-c-rating_adjustment-label-Arguments">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+                  <ul><li>
+                  <p><code>expected_score</code>: a float between 0 and 1, representing the
+                  probability of</p>
+                  </li></ul>
+                  
+                  <p>the player winning</p>
+                  <ul><li>
+                  <p><code>actual_score</code>: 0, 0.5, or 1, whether the outcome was a loss,
+                  draw, or win</p>
+                  </li></ul>
+                  
+                  <p>(respectively)</p>
+                  <ul><li>
+                  <p><code>rating</code> (optional): the rating of the player, used by the
+                  K-factor function</p>
+                  </li><li>
+                  <p><code>k_factor</code> (optional): the K-factor to use for this calculation
+                  to be used</p>
+                  </li></ul>
+                  
+                  <p>instead of the normal K-factor or K-factor function</p>
+                  
+                  <p>Returns a positive or negative float representing the amount the
+                  player&#39;s rating should change.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-c-rating_adjustment-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-c-rating_adjustment-source'><span class="ruby-comment"># File lib/elo_rating.rb, line 69</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">rating_adjustment</span>(<span class="ruby-identifier">expected_score</span>, <span class="ruby-identifier">actual_score</span>, <span class="ruby-identifier">rating</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">k_factor</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)&#x000A;  <span class="ruby-identifier">k_factor</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">k_factor</span>(<span class="ruby-identifier">rating</span>)&#x000A;  <span class="ruby-identifier">k_factor</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">actual_score</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">expected_score</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-class' id='method-method-c-set_k_factor'>
+                <a name='method-c-set_k_factor'></a>
+                <div class='synopsis'>
+                  <span class='name'>set_k_factor</span>
+                  <span class='arguments'>(&k_factor)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Sets the K-factor by providing a block that optionally takes a
+                  <code>rating</code> argument:</p>
+                  
+                  <pre class="ruby"><span class="ruby-constant">EloRating</span><span class="ruby-operator">::</span><span class="ruby-identifier">set_k_factor</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">rating</span><span class="ruby-operator">|</span>&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">rating</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">rating</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2500</span>&#x000A;    <span class="ruby-value">24</span>&#x000A;  <span class="ruby-keyword">else</span>&#x000A;    <span class="ruby-value">16</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  
+                  <p>Raises an <code>ArgumentError</code> if an exception is encountered when
+                  calling the provided block with nil as the argument</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-c-set_k_factor-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-c-set_k_factor-source'><span class="ruby-comment"># File lib/elo_rating.rb, line 33</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">set_k_factor</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">k_factor</span>)&#x000A;  <span class="ruby-identifier">k_factor</span>.<span class="ruby-identifier">call</span>(<span class="ruby-keyword">nil</span>)&#x000A;  <span class="ruby-ivar">@k_factor</span> = <span class="ruby-identifier">k_factor</span>&#x000A;<span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>&#x000A;  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Error encountered in K-factor block when passed nil rating: #{e}&quot;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a target="docwin" href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>

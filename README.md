@@ -49,7 +49,7 @@ We can do this by combining the rating adjustments for each pairing of players i
 
 Say you have three players, rated 1900, 2000, and 2000. They are playing a game
 like [Monopoly](https://en.wikipedia.org/wiki/Monopoly_(game)) where there is
-only one winner. The third player wins.
+only one winner. The first player wins.
 To determine their new scores:
 
 ```ruby

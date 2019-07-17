@@ -80,6 +80,17 @@ match.updated_ratings # => [1931, 1997, 1973]
 
 This is calculated as if the first player beat both of the other players and the second player beat the third.
 
+In some multiplayer games there might be ties (e.g, same number of enemies
+killed) and that's supported too:
+
+```ruby
+match = EloRating::Match.new
+match.add_player(rating: 1900, place: 1)
+match.add_player(rating: 2000, place: 1)
+match.add_player(rating: 2000, place: 2)
+match.updated_ratings # => [1919, 2009, 1973]
+```
+
 ## Elo rating functions
 
 The functions used in the above calculations are available for use directly:

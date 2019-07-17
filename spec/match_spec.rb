@@ -31,6 +31,16 @@ describe EloRating::Match do
       end
     end
 
+    context 'ranked game with 3 players including ties' do
+      it 'returns the updated ratings of all the players' do
+        match = EloRating::Match.new
+        match.add_player(rating: 1900, place: 1)
+        match.add_player(rating: 2000, place: 1)
+        match.add_player(rating: 2000, place: 2)
+        expect(match.updated_ratings).to eql [1919, 2009, 1973]
+      end
+    end
+
     context 'custom K-factor function' do
       it 'uses the custom K-factor function' do
         EloRating::set_k_factor do |rating|
